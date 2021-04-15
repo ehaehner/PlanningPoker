@@ -1,0 +1,37 @@
+@import '~@angular/material/_theming.scss';
+
+mat-panel-title,
+mat-panel-description {
+    flex-basis: 0;
+    align-items: center;
+}
+
+mat-panel-title {
+    max-width: 10rem;
+}
+
+mat-panel-description {
+    justify-content: space-between;
+}
+
+.story-description-header {
+    margin-bottom: 15px;
+
+    [mat-raised-button] {
+        margin: 8px;
+    }
+
+    .mat-table {
+        .mat-row {
+            height: 25px;
+        }
+    }
+
+    mat-button-toggle-group {
+        mat-button-toggle {
+            &.async {
+                background-color: mat-color(mat-palette($mat-red, 600))
+            }
+        }
+    }
+}

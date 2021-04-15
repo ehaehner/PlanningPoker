@@ -1,0 +1,51 @@
+<mat-expansion-panel>
+    <mat-expansion-panel-header [collapsedHeight]="headerHeight" [expandedHeight]="headerHeight">
+        <mat-panel-title>{{story.key}}</mat-panel-title>
+        <mat-panel-description>
+            {{story.summary}}
+            <div>
+                <mat-icon *ngIf="story.note" [title]="story.note">comment</mat-icon>
+                <button mat-mini-fab *ngIf="story.points">{{story.points}}</button>
+            </div>
+        </mat-panel-description>
+    </mat-expansion-panel-header>
+    <mat-grid-list [cols]="2" [rowHeight]="descriptionHeaderRowHeight" class="story-description-header">
+        <mat-grid-tile>
+            <a mat-raised-button [href]="jiraUrl" target="_blank">Open in Jira</a>
+            <button mat-raised-button (click)="openAddNodeDialog()">Set Note</button>
+            <button *ngIf="story.points && !story.revealed" mat-raised-button color="accent"
+                    (click)="sendMsgToShowPokerResults()">
+                Show Results
+            </button>
+            <button *ngIf="story.revealed" mat-raised-button color="accent"
+                    (click)="sendMsgToHidePokerResults()">
+                RePoker
+            </button>
+        </mat-grid-tile>
+        <mat-grid-tile *ngIf="!story.revealed">
+            <mat-card-content>
+                <mat-button-toggle-group name="storypoints-{{story.key}}"
+                                         [(ngModel)]="story.points">
+                    <mat-button-toggle
+                        value="{{storyPoints}}"
+                        [class.async]="story.async && storyPoints == story.points"
+                        *ngFor="let storyPoints of validStoryPoints"
+                        (click)="userService.updateStoryAtServer(story); story.async = true;">{{storyPoints}}</mat-button-toggle>
+                </mat-button-toggle-group>
+                <br>
+                <div *ngIf="story.activePokerUsers.length">{{story.activePokerUsers.length}} votes:
+                    {{story.activePokerUsers.join(', ')}}</div>
+            </mat-card-content>
+        </mat-grid-tile>
+        <mat-grid-tile *ngIf="story.revealed">
+            <table mat-table [dataSource]="revealedStoryPoints" class="mat-elevation-z8">
+                <mat-text-column name="username"></mat-text-column>
+                <mat-text-column name="storyPoints"></mat-text-column>
+
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </mat-grid-tile>
+    </mat-grid-list>
+    <mat-divider></mat-divider>
+    <p [innerHTML]="story.description"></p>
+</mat-expansion-panel>

@@ -1,0 +1,20 @@
+<form (ngSubmit)="loginPokerUser()">
+    <mat-grid-list cols="1" rowHeight="80px">
+        <mat-grid-tile>
+            <mat-form-field>
+                <mat-label>Wie heißt du?</mat-label>
+                <input matInput type="text" required minlength="3" name="username" id="username"
+                       aria-label="username" [matAutocomplete]="autoUsernames" [formControl]="myFormControl"
+                       [(ngModel)]="username"/>
+                <mat-autocomplete #autoUsernames="matAutocomplete">
+                    <mat-option *ngFor="let optionUsername of filteredUsernameOptions | async" [value]="optionUsername">
+                        {{optionUsername}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <button mat-raised-button color="primary" type="submit">Login</button>
+        </mat-grid-tile>
+    </mat-grid-list>
+</form>

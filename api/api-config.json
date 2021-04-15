@@ -1,0 +1,9 @@
+{
+    "jiraUsername": "myuser",
+    "jiraPassword": "mypassword",
+    "jiraPokerListJql": "project=myProject AND fixVersion=pokern ORDER BY Rank",
+    "appBaseUrls": [
+        "http://localhost:4200",
+        "http://127.0.0.1:4200"
+    ]
+}

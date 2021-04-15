@@ -1,0 +1,73 @@
+// file service: https://www.twilio.com/blog/transfer-files-data-javascript-applications-angular-node-js
+import { BrowserModule } from '@angular/platform-browser';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { LoginComponent } from './login/login.component';
+import { PokerlistComponent } from './pokerlist/pokerlist.component';
+import { UserService } from './services/user.service';
+import { ConfigService } from './services/config.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatButtonModule } from '@angular/material/button';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatInputModule } from '@angular/material/input';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { WebsocketService } from './services/websocket.service';
+import { MatTableModule } from '@angular/material/table';
+import { MatDialogModule } from '@angular/material/dialog';
+import { JiraStoryComponent } from './jira-story/jira-story.component';
+import { JiraNoteDialogComponent } from './jira-story/jira-note-dialog/jira-note-dialog.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { CreateUserDialogComponent } from './login/create-user-dialog/create-user-dialog.component';
+import { MatCardModule } from '@angular/material/card';
+
+function initializeApp(appConfig: ConfigService): () => Promise<void> {
+    return () => appConfig.loadConfig();
+}
+
+@NgModule({
+    declarations: [
+        AppComponent,
+        LoginComponent,
+        PokerlistComponent,
+        JiraStoryComponent,
+        JiraNoteDialogComponent,
+        CreateUserDialogComponent
+    ],
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        AppRoutingModule,
+        FormsModule,
+        BrowserAnimationsModule,
+        MatButtonModule, MatGridListModule, MatInputModule, MatExpansionModule, MatButtonToggleModule, MatBadgeModule,
+        MatDividerModule, MatToolbarModule, MatIconModule, MatProgressBarModule, MatTableModule, MatDialogModule, MatFormFieldModule,
+        MatAutocompleteModule, ReactiveFormsModule, MatCardModule
+    ],
+    providers: [
+        CookieService,
+        UserService,
+        ConfigService,
+        WebsocketService,
+        {
+            provide: APP_INITIALIZER,
+            useFactory: initializeApp,
+            deps: [ConfigService],
+            multi: true
+        }
+    ],
+    bootstrap: [AppComponent]
+})
+export class AppModule {
+}
