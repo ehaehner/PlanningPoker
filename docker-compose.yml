@@ -1,0 +1,9 @@
+version: "2.2"
+services:
+    app:
+        build: .
+        ports:
+            - "5000:5000"
+            - "4200:4200"
+        volumes:
+            - ./data/:/app/PlanningPoker/data
