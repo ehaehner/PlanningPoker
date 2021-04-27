@@ -10,6 +10,8 @@ from requests.auth import HTTPBasicAuth
 import getpass
 import json
 import os.path
+import sys
+import logging
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -291,8 +293,23 @@ def add_cors_headers(response):
             response.headers.add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE')
     return response
 
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(filename='example.log', filemode='w', level=logging.DEBUG)
+
+def handle_unhandled_exception(exc_type, exc_value, exc_traceback):
+    """Handler for unhandled exceptions that will write to the logs"""
+    if issubclass(exc_type, KeyboardInterrupt):
+        # call the default excepthook saved at __excepthook__
+        sys.__excepthook__(exc_type, exc_value, exc_traceback)
+        return
+    logger.critical("Unhandled exception", exc_info=(exc_type, exc_value, exc_traceback))
+
+sys.excepthook = handle_unhandled_exception
+
+
 #This is the function that will create the Server in the ip host and port 5000
 if __name__ == "__main__":
     print("starting webservice")
-    socketio.run(app, host='0.0.0.0')
+    socketio.run(app, host='0.0.0.0', debug=False)
 
