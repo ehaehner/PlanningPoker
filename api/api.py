@@ -24,10 +24,13 @@ clients = []
 
 revealedStories = []
 
+logger = logging.getLogger(__name__)
+logging.basicConfig(filename='data/python.log', filemode='w', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+
 # angular calls this
 @app.route('/api/socket')
 def index():
-    print('Route socket init')
+    logger.info('Route socket init')
     return ('{"ok":"success"}')
 
 
@@ -36,12 +39,12 @@ def index():
 def test_connect():
     global clients
     clients.append(request.sid)
-    print('Client connected {0}'.format(request.sid))
+    logger.info('Client connected {0}'.format(request.sid))
 
 @socketio.on('send-show-poker-results')
 def send_show_poker_results(message):
-    print('received show_poker_results {0} from {1}'.format(message, request.sid))
-    print('sending Data to {0} clients'.format(clients))
+    logger.info('received show_poker_results {0} from {1}'.format(message, request.sid))
+    logger.info('sending Data to {0} clients'.format(clients))
 
     if message['storyKey'] not in revealedStories:
         revealedStories.append(message['storyKey'])
@@ -53,8 +56,8 @@ def send_show_poker_results(message):
 
 @socketio.on('send-hide-poker-results')
 def send_hide_poker_results(message):
-    print('received hide_poker_results {0} from {1}'.format(message, request.sid))
-    print('sending Data to {0} clients'.format(clients))
+    logger.info('received hide_poker_results {0} from {1}'.format(message, request.sid))
+    logger.info('sending Data to {0} clients'.format(clients))
 
     if message['storyKey'] in revealedStories:
         revealedStories.append(message['storyKey'])
@@ -68,7 +71,7 @@ def send_hide_poker_results(message):
 def test_disconnect():
     global clients
     clients.remove(request.sid)
-    print('Client disconnected')
+    logger.info('Client disconnected')
 
 # Rest APIs
 # Create some test data for our catalog in the form of a list of dictionaries.
@@ -87,7 +90,7 @@ if os.path.isfile(data_storage_filename):
         if (data_storage):
             users = ast.literal_eval(data_storage)
 
-print('Reading config from ' + api_config_filename)
+logger.info('Reading config from ' + api_config_filename)
 with open(api_config_filename) as f:
     config = ast.literal_eval(f.read())
     if 'jiraUsername' in config:
@@ -95,18 +98,18 @@ with open(api_config_filename) as f:
     if 'jiraPassword' in config:
         jiraPassword = config['jiraPassword']
 
-print('Reading config from ' + poker_config_filename)
+logger.info('Reading config from ' + poker_config_filename)
 with open(poker_config_filename) as f:
     api_config = ast.literal_eval(f.read())
     config = {**config, **api_config}
 
-print(json.dumps(config))
+#logger.info(json.dumps(config))
 
 # get jira username and password
 if jiraUsername and jiraPassword:
-    print('Configured jira User: ' + jiraUsername)
+    logger.info('Configured jira User: ' + jiraUsername)
 else:
-    print('Please add Authentication for jira at ' + poker_config_filename)
+    logger.info('Please add Authentication for jira at ' + poker_config_filename)
 
 @app.route('/', methods=['GET'])
 def home():
@@ -242,7 +245,7 @@ def jira_pokerlist():
             http_proxy  = config['proxy']
             https_proxy = http_proxy
             ftp_proxy   = http_proxy
-            print('set proxy to ' + http_proxy)
+            logger.info('set proxy to ' + http_proxy)
             proxyDict = {
                 "http"  : http_proxy,
                 "https" : https_proxy,
@@ -252,7 +255,7 @@ def jira_pokerlist():
         jiraResponse = requests.post(config['jiraUrl'] + 'rest/api/2/search', json = {'jql': config['jiraPokerListJql'], "expand": ["renderedFields"], "fields": jiraStoryAttributesWhiteList}, headers={"Content-Type": "application/json", "Accept" : "application/json"},auth=(jiraUsername, jiraPassword), proxies=proxyDict)
         jsonResponse = json.loads(jiraResponse.text)
     else:
-        print('mock jira pokerlist from api/search.json')
+        logger.info('mock jira pokerlist from api/search.json')
         with open('api/search.json') as json_file:
             jsonResponse = json.load(json_file)
 
@@ -269,7 +272,7 @@ def jira_pokerlist():
                 elif issueAttributeKey in issue['fields']:
                     resultIssueElement[issueAttributeKey] = issue['fields'][issueAttributeKey]
                 else:
-                    print('Could not find attribute {0} at jira response.'.format(issueAttributeKey))
+                    logger.info('Could not find attribute {0} at jira response.'.format(issueAttributeKey))
             resultIssueElement['revealed'] = resultIssueElement['key'] in revealedStories
             resultIssueElement['activePokerUsers'] = get_active_poker_users(resultIssueElement['key'])
             resultList.append(resultIssueElement)
@@ -293,10 +296,6 @@ def add_cors_headers(response):
             response.headers.add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE')
     return response
 
-
-logger = logging.getLogger(__name__)
-logging.basicConfig(filename='data/python.log', filemode='w', level=logging.DEBUG)
-
 def handle_unhandled_exception(exc_type, exc_value, exc_traceback):
     """Handler for unhandled exceptions that will write to the logs"""
     if issubclass(exc_type, KeyboardInterrupt):
@@ -310,6 +309,6 @@ sys.excepthook = handle_unhandled_exception
 
 #This is the function that will create the Server in the ip host and port 5000
 if __name__ == "__main__":
-    print("starting webservice")
+    logger.info("starting webservice")
     socketio.run(app, host='0.0.0.0', debug=False)
 
