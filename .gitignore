@@ -4,8 +4,7 @@
 api/*.txt
 # poker config
 src/assets/poker-config.json
-data/*
-api/api-config.json
+data/
 
 # compiled output
 /dist
