@@ -4,6 +4,9 @@
 
 FROM centos:centos8
 
+ARG http_proxy
+ARG https_proxy
+
 RUN yum install npm -y
 RUN yum install openssh-server npm git python3 python3-pip vim -y
 
