@@ -295,7 +295,7 @@ def add_cors_headers(response):
 
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(filename='example.log', filemode='w', level=logging.DEBUG)
+logging.basicConfig(filename='data/python.log', filemode='w', level=logging.DEBUG)
 
 def handle_unhandled_exception(exc_type, exc_value, exc_traceback):
     """Handler for unhandled exceptions that will write to the logs"""
