@@ -74,7 +74,7 @@ def test_disconnect():
 # Create some test data for our catalog in the form of a list of dictionaries.
 data_storage_filename = 'data/data.json'
 poker_config_filename = 'src/assets/poker-config.json'
-api_config_filename = 'api/api-config.json'
+api_config_filename = 'data/api-config.json'
 users = []
 config = []
 
