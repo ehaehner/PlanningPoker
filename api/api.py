@@ -111,6 +111,19 @@ if jiraUsername and jiraPassword:
 else:
     logger.info('Please add Authentication for jira at ' + poker_config_filename)
 
+ip_white_list_property = 'ip_white_list'
+if ip_white_list_property not in config or type(config[ip_white_list_property]) is not list:
+    config[ip_white_list_property] = []
+
+ip_white_list = config[ip_white_list_property]
+logger.info('ip whitelist: ' + str(ip_white_list))
+@app.before_request
+def block_method():
+    ip = request.environ.get('REMOTE_ADDR')
+    if ip_white_list and ip not in ip_white_list:
+        logger.info('block for ip ' + ip)
+        return Response(status=403)
+
 @app.route('/', methods=['GET'])
 def home():
     return '<p>Here is nothing.</p>'
