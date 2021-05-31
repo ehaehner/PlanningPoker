@@ -25,7 +25,7 @@ clients = []
 revealedStories = []
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(filename='data/python.log', filemode='w', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='data/python.log', filemode='a', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # angular calls this
 @app.route('/api/socket')
@@ -74,7 +74,6 @@ def test_disconnect():
     logger.info('Client disconnected')
 
 # Rest APIs
-# Create some test data for our catalog in the form of a list of dictionaries.
 data_storage_filename = 'data/data.json'
 poker_config_filename = 'src/assets/poker-config.json'
 api_config_filename = 'data/api-config.json'
@@ -84,6 +83,7 @@ config = []
 jiraUsername = ''
 jiraPassword = ''
 
+# read userdata from storage
 if os.path.isfile(data_storage_filename):
     with open(data_storage_filename) as data_storage_file:
         data_storage = data_storage_file.read()
@@ -117,6 +117,23 @@ if ip_white_list_property not in config or type(config[ip_white_list_property]) 
 
 ip_white_list = config[ip_white_list_property]
 logger.info('ip whitelist: ' + str(ip_white_list))
+
+# cleanup outdated stories from storage file when story is not at pokerlist but in storage file
+def cleanup_storage():
+    logger.info('Cleanup storage file now!')
+    logger.info('old list: ' + json.dumps(users))
+    current_storylist = []
+    for story in get_pokerlist_from_jira():
+        current_storylist.append(story['key'])
+    logger.info('Current stories: ' + json.dumps(current_storylist))
+    if len(current_storylist) > 0:
+        for user in users:
+            if 'stories' in user:
+                clean_list = list(filter(lambda userstory: userstory['key'] in current_storylist, user['stories']))
+                user['stories'] = clean_list
+    logger.info('new list after cleanup: ' + json.dumps(users))
+    save_file()
+
 @app.before_request
 def block_method():
     ip = request.environ.get('REMOTE_ADDR')
@@ -249,7 +266,9 @@ def get_story_points_for_user(username, storyKey):
 
 @app.route('/api/jira/pokerlist', methods=['GET'])
 def jira_pokerlist():
-    # mock jiraResponse
+    return jsonify(get_pokerlist_from_jira())
+
+def get_pokerlist_from_jira():
     jiraStoryAttributesWhiteList = ['key', 'summary', 'description']
     if jiraPassword and jiraUsername:
         # load
@@ -268,6 +287,7 @@ def jira_pokerlist():
         jiraResponse = requests.post(config['jiraUrl'] + 'rest/api/2/search', json = {'jql': config['jiraPokerListJql'], "expand": ["renderedFields"], "fields": jiraStoryAttributesWhiteList}, headers={"Content-Type": "application/json", "Accept" : "application/json"},auth=(jiraUsername, jiraPassword), proxies=proxyDict)
         jsonResponse = json.loads(jiraResponse.text)
     else:
+        # mock jiraResponse
         logger.info('mock jira pokerlist from api/search.json')
         with open('api/search.json') as json_file:
             jsonResponse = json.load(json_file)
@@ -289,9 +309,9 @@ def jira_pokerlist():
             resultIssueElement['revealed'] = resultIssueElement['key'] in revealedStories
             resultIssueElement['activePokerUsers'] = get_active_poker_users(resultIssueElement['key'])
             resultList.append(resultIssueElement)
-        return jsonify(resultList)
+        return resultList
     else:
-        return jsonify([])
+        return []
 
 white = config['appBaseUrls']
 
@@ -319,6 +339,7 @@ def handle_unhandled_exception(exc_type, exc_value, exc_traceback):
 
 sys.excepthook = handle_unhandled_exception
 
+cleanup_storage()
 
 #This is the function that will create the Server in the ip host and port 5000
 if __name__ == "__main__":
