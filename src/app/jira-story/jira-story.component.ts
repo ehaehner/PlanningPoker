@@ -8,6 +8,7 @@ import { WebsocketService } from '../services/websocket.service';
 import { PokerResult } from '../primitive/poker-result';
 import { JiraNoteDialogComponent } from './jira-note-dialog/jira-note-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { RestartVotingDialogComponent } from './restart-voting-dialog/restart-voting-dialog.component';
 
 @Component({
     selector: 'app-jira-story',
@@ -88,14 +89,20 @@ export class JiraStoryComponent implements OnInit {
     }
 
     sendMsgToHidePokerResults(): void {
-        const msg: MsgShowPokerResult = {storyKey: this.story.key};
-        this.webSocketService.socket.emit('send-hide-poker-results', msg);
-        this.hidePokerResults();
+        const dialogRef = this.dialog.open(RestartVotingDialogComponent);
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                const msg: MsgShowPokerResult = {storyKey: this.story.key};
+                this.webSocketService.socket.emit('send-hide-poker-results', msg);
+                this.hidePokerResults();
+            }
+        });
     }
 
     hidePokerResults(): void {
         this.story.revealed = false;
-        this.descriptionHeaderRowHeight = '60px';
+        this.story.points = undefined;
+        this.descriptionHeaderRowHeight = '70px';
     }
 
     openAddNodeDialog(): void {

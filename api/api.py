@@ -61,6 +61,7 @@ def send_hide_poker_results(message):
 
     if message['storyKey'] in revealedStories:
         revealedStories.remove(message['storyKey'])
+        clear_votes_for_story(message['storyKey'])
 
     # broadcast to all but self
     for client in clients:
@@ -133,6 +134,12 @@ def cleanup_storage():
                 user['stories'] = clean_list
     logger.info('new list after cleanup: ' + json.dumps(users))
     save_file()
+
+def clear_votes_for_story(storyKey):
+    for user in users:
+        if 'stories' in user:
+            clean_list = list(filter(lambda userstory: userstory['key'] != storyKey, user['stories']))
+            user['stories'] = clean_list
 
 @app.before_request
 def block_method():

@@ -31,6 +31,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CreateUserDialogComponent } from './login/create-user-dialog/create-user-dialog.component';
 import { MatCardModule } from '@angular/material/card';
+import { RestartVotingDialogComponent } from './jira-story/restart-voting-dialog/restart-voting-dialog.component';
 
 function initializeApp(appConfig: ConfigService): () => Promise<void> {
     return () => appConfig.loadConfig();
@@ -43,7 +44,8 @@ function initializeApp(appConfig: ConfigService): () => Promise<void> {
         PokerlistComponent,
         JiraStoryComponent,
         JiraNoteDialogComponent,
-        CreateUserDialogComponent
+        CreateUserDialogComponent,
+        RestartVotingDialogComponent
     ],
     imports: [
         BrowserModule,
