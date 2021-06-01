@@ -11,9 +11,14 @@ export class WebsocketService {
 
     constructor(private http: HttpClient) {
         this.socket = io(ConfigService.pokerConfig.apiBaseUrl);
-        this.http.get(ConfigService.pokerConfig.apiBaseUrl + '/api/socket')
+        this.http.get<SocketInitData>(ConfigService.pokerConfig.apiBaseUrl + '/api/socket')
             .subscribe(data => {
-                console.log(data);
+                if (data.ok !== 'success') {
+                    console.log('Cannot connect to socket');
+                }
             });
     }
+}
+export interface SocketInitData {
+    ok: string;
 }
