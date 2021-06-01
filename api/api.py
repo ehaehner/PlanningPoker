@@ -60,7 +60,7 @@ def send_hide_poker_results(message):
     logger.info('sending Data to {0} clients'.format(clients))
 
     if message['storyKey'] in revealedStories:
-        revealedStories.append(message['storyKey'])
+        revealedStories.remove(message['storyKey'])
 
     # broadcast to all but self
     for client in clients:
