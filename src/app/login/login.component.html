@@ -1,4 +1,4 @@
-<form (ngSubmit)="loginPokerUser()">
+<form *ngIf="loadedUserData" (ngSubmit)="loginPokerUser()">
     <mat-grid-list cols="1" rowHeight="80px">
         <mat-grid-tile>
             <mat-form-field>
@@ -18,3 +18,7 @@
         </mat-grid-tile>
     </mat-grid-list>
 </form>
+<div *ngIf="!loadedUserData">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    connect to server, please wait
+</div>

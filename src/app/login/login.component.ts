@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
     myFormControl = new FormControl();
     allUsers: string[] = [];
     filteredUsernameOptions = new Observable<string[]>();
+    loadedUserData = false;
 
     constructor(private authService: AuthService, private router: Router, private userService: UserService,
                 private dialog: MatDialog) {
@@ -33,6 +34,7 @@ export class LoginComponent implements OnInit {
         });
         this.userService.getAllUsers().subscribe(data => {
             this.allUsers = data;
+            this.loadedUserData = true;
         });
         this.filteredUsernameOptions = this.myFormControl.valueChanges.pipe(
             startWith(''),
