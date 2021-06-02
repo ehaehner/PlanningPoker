@@ -12,6 +12,7 @@ import json
 import os.path
 import sys
 import logging
+import re
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -320,14 +321,17 @@ def get_pokerlist_from_jira():
     else:
         return []
 
-white = config['appBaseUrls']
+corsWhiteList = config['appBaseUrls']
 
 @app.after_request
 def add_cors_headers(response):
     if request.referrer is not None:
-        r = request.referrer[:-1]
-        if r in white:
-            response.headers.add('Access-Control-Allow-Origin', r)
+        requestReferrer = request.referrer
+        matcher = re.search('(https?://[^/]+)/', requestReferrer)
+        referrerDomain = matcher.group(1)
+        print("domain is " + referrerDomain)
+        if referrerDomain in corsWhiteList:
+            response.headers.add('Access-Control-Allow-Origin', referrerDomain)
             response.headers.add('Access-Control-Allow-Credentials', 'true')
             response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
             response.headers.add('Access-Control-Allow-Headers', 'Cache-Control')
@@ -335,7 +339,7 @@ def add_cors_headers(response):
             response.headers.add('Access-Control-Allow-Headers', 'Authorization')
             response.headers.add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE')
         else:
-            logger.info('Referrer ' + r + ' is not whitelisted.')
+            logger.info('Referrer ' + referrerDomain + ' is not whitelisted.')
     else:
         logger.info('No referrer is set.')
     return response
