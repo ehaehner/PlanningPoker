@@ -334,6 +334,10 @@ def add_cors_headers(response):
             response.headers.add('Access-Control-Allow-Headers', 'X-Requested-With')
             response.headers.add('Access-Control-Allow-Headers', 'Authorization')
             response.headers.add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE')
+        else:
+            logger.info('Referrer ' + r + ' is not whitelisted.')
+    else:
+        logger.info('No referrer is set.')
     return response
 
 def handle_unhandled_exception(exc_type, exc_value, exc_traceback):
