@@ -329,7 +329,6 @@ def add_cors_headers(response):
         requestReferrer = request.referrer
         matcher = re.search('(https?://[^/]+)/', requestReferrer)
         referrerDomain = matcher.group(1)
-        print("domain is " + referrerDomain)
         if referrerDomain in corsWhiteList:
             response.headers.add('Access-Control-Allow-Origin', referrerDomain)
             response.headers.add('Access-Control-Allow-Credentials', 'true')
