@@ -102,6 +102,7 @@ export class JiraStoryComponent implements OnInit {
     hidePokerResults(): void {
         this.story.revealed = false;
         this.story.points = undefined;
+        this.story.activePokerUsers = [];
         this.descriptionHeaderRowHeight = '70px';
     }
 
