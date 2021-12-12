@@ -3,7 +3,13 @@ services:
     app:
         build: .
         ports:
-            - "5000:5000"
             - "4200:4200"
         volumes:
             - ./data/:/app/PlanningPoker/data
+    backend:
+        build: api/.
+        ports:
+            - "5000:5000"
+        volumes:
+            - ./data/:/usr/src/app/data
+            - ./src/assets/poker-config.json:/usr/src/app/src/assets/poker-config.json
