@@ -72,7 +72,8 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "PlanningPoker:build"
+                        "browserTarget": "PlanningPoker:build",
+                        "proxyConfig": "src/proxy.conf.json"
                     },
                     "configurations": {
                         "production": {

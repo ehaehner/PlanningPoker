@@ -3,11 +3,4 @@
     "jiraPassword": "mypassword",
     "jiraPokerListJql": "project=myProject AND fixVersion=pokern ORDER BY Rank",
     "proxy:": "http://proxy:8080",
-    "ip_white_list": [
-        "127.0.0.1"
-    ],
-    "appBaseUrls": [
-        "http://localhost:4200",
-        "http://127.0.0.1:4200"
-    ]
 }

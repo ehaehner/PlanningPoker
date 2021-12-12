@@ -113,13 +113,6 @@ if jiraUsername and jiraPassword:
 else:
     logger.info('Please add Authentication for jira at ' + poker_config_filename)
 
-ip_white_list_property = 'ip_white_list'
-if ip_white_list_property not in config or type(config[ip_white_list_property]) is not list:
-    config[ip_white_list_property] = []
-
-ip_white_list = config[ip_white_list_property]
-logger.info('ip whitelist: ' + str(ip_white_list))
-
 # cleanup outdated stories from storage file when story is not at pokerlist but in storage file
 def cleanup_storage():
     logger.info('Cleanup storage file now!')
@@ -141,13 +134,6 @@ def clear_votes_for_story(storyKey):
         if 'stories' in user:
             clean_list = list(filter(lambda userstory: userstory['key'] != storyKey, user['stories']))
             user['stories'] = clean_list
-
-@app.before_request
-def block_method():
-    ip = request.environ.get('REMOTE_ADDR')
-    if ip_white_list and ip not in ip_white_list:
-        logger.info('block for ip ' + ip)
-        return Response(status=403)
 
 @app.route('/', methods=['GET'])
 def home():
@@ -320,28 +306,6 @@ def get_pokerlist_from_jira():
         return resultList
     else:
         return []
-
-corsWhiteList = config['appBaseUrls']
-
-@app.after_request
-def add_cors_headers(response):
-    if request.referrer is not None:
-        requestReferrer = request.referrer
-        matcher = re.search('(https?://[^/]+)/', requestReferrer)
-        referrerDomain = matcher.group(1)
-        if referrerDomain in corsWhiteList:
-            response.headers.add('Access-Control-Allow-Origin', referrerDomain)
-            response.headers.add('Access-Control-Allow-Credentials', 'true')
-            response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
-            response.headers.add('Access-Control-Allow-Headers', 'Cache-Control')
-            response.headers.add('Access-Control-Allow-Headers', 'X-Requested-With')
-            response.headers.add('Access-Control-Allow-Headers', 'Authorization')
-            response.headers.add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE')
-        else:
-            logger.info('Referrer ' + referrerDomain + ' is not whitelisted.')
-    else:
-        logger.info('No referrer is set.')
-    return response
 
 def handle_unhandled_exception(exc_type, exc_value, exc_traceback):
     """Handler for unhandled exceptions that will write to the logs"""

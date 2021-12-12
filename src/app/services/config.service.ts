@@ -16,9 +16,7 @@ export class ConfigService {
         return new Promise<void>((resolve, reject) => {
             this.http.get(jsonFile).toPromise().then((response) => {
                 ConfigService.pokerConfig = response as PokerConfig;
-                ConfigService.pokerConfig.apiBaseUrl =
-                    window.location.protocol + '//' + window.location.hostname + ':'
-                    + ConfigService.pokerConfig.apiPort;
+                ConfigService.pokerConfig.apiBaseUrl = '';
                 resolve();
             }).catch((response) => {
                 reject('Could not load file ' + jsonFile + '.');
