@@ -36,7 +36,7 @@ services:
             cp -r /pip-packages/* /pip-packages-data/ && cp -r /python/* /python-data/ && touch /python-data/deployed.txt
     backend:
         container_name: planningpoker-backend
-        image: python:3
+        image: python:3-slim
         volumes:
             - python-script:/usr/src/app/script
             - pip-packages:/usr/local/lib/python3.10/site-packages

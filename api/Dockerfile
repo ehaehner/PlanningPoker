@@ -1,4 +1,4 @@
-FROM python:3 AS builder
+FROM python:3-slim AS builder
 
 ARG http_proxy
 ARG https_proxy
