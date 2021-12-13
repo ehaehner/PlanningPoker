@@ -1,27 +1,27 @@
 version: "2.2"
 services:
-    app-data:
+    app-modules:
         build: .
         volumes:
-          - app-data:/pp-app
+          - app-node-modules:/app-node_modules
         entrypoint:
           - /bin/sh
           - -c
           - |
-            cp -r /planningpoker/* /pp-app/ && touch /pp-app/deployed.txt
+            cp -r /planningpoker/. /app-node_modules/ && touch /app-node_modules/deployed.txt
     app:
         container_name: planningpoker-app
         image: node:17.2.0-slim
         ports:
             - "4200:4200"
         volumes:
-            - app-data:/app/PlanningPoker
-            - ./data/:/app/PlanningPoker/data
+            - .:/app/PlanningPoker
+            - app-node-modules:/app/PlanningPoker/node_modules
         entrypoint:
             - /bin/sh
             - -c
             - |
-              cd /app/PlanningPoker && until [ -e deployed.txt ]; do echo "wait"; sleep 1; done && rm deployed.txt && echo "starting" && npm start
+              cd /app/PlanningPoker && until [ -e node_modules/deployed.txt ]; do echo "wait"; sleep 1; done && rm node_modules/deployed.txt && echo "starting" && npm start
         networks:
             - default
     backend-data:
@@ -58,7 +58,7 @@ volumes:
     driver_opts:
       type: tmpfs
       device: tmpfs
-  app-data:
+  app-node-modules:
     driver_opts:
       type: tmpfs
       device: tmpfs
