@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3 AS builder
 
 ARG http_proxy
 ARG https_proxy
@@ -8,5 +8,7 @@ WORKDIR /usr/src/app
 COPY . .
 RUN pip install --no-cache-dir -r requirements.txt
 
-CMD [ "python", "./api.py" ]
+FROM busybox:latest
+COPY --from=0 /usr/local/lib/python3.10/site-packages/ /pip-packages/
+COPY api.py /python/
 

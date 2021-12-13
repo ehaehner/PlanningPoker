@@ -8,10 +8,38 @@ services:
             - ./data/:/app/PlanningPoker/data
         networks:
             - default
-    backend:
+    backend-data:
         build: api/.
+        container_name: backend-data
         volumes:
+          - python-script:/python-data
+          - pip-packages:/pip-packages-data
+        entrypoint:
+          - /bin/sh
+          - -c
+          - |
+            cp -r /pip-packages/* /pip-packages-data/ && cp -r /python/* /python-data/ && touch /python-data/deployed.txt
+    backend:
+        image: python:3
+        volumes:
+            - python-script:/usr/src/app/script
+            - pip-packages:/usr/local/lib/python3.10/site-packages
             - ./data/:/usr/src/app/data
             - ./src/assets/poker-config.json:/usr/src/app/src/assets/poker-config.json
+        entrypoint:
+            - /bin/sh
+            - -c
+            - |
+              cd /usr/src/app/ && until [ -e /usr/src/app/script/deployed.txt ]; do echo "wait"; sleep 1; done && rm script/deployed.txt && mv script/api.py . && echo "starting" && python api.py
         networks:
             - default
+volumes:
+  python-script:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
+  pip-packages:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
+
