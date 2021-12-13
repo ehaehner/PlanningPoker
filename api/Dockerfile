@@ -9,6 +9,6 @@ COPY . .
 RUN pip install --no-cache-dir -r requirements.txt
 
 FROM busybox:latest
-COPY --from=0 /usr/local/lib/python3.10/site-packages/ /pip-packages/
+COPY --from=builder /usr/local/lib/python3.10/site-packages/ /pip-packages/
 COPY api.py /python/
 
