@@ -11,7 +11,7 @@ services:
             cp -r /planningpoker/. /app-node_modules/ && touch /app-node_modules/deployed.txt
     app:
         container_name: planningpoker-app
-        image: node:17.2.0-slim
+        image: node:17.3.0-alpine
         ports:
             - "4200:4200"
         volumes:
@@ -35,7 +35,7 @@ services:
             rm -f /pip-packages-data/deployed.txt && cp -r /pip-packages/* /pip-packages-data/ && touch /pip-packages-data/deployed.txt
     backend:
         container_name: planningpoker-backend
-        image: python:3-slim
+        image: python:3.10.1-alpine
         volumes:
             - ./api/api.py:/usr/src/app/api.py
             - pip-packages:/usr/local/lib/python3.10/site-packages
