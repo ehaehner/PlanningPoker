@@ -28,7 +28,7 @@ export class JiraStoryComponent implements OnInit {
     validStoryPoints: string[] = ['?', '0', '1', '2', '3', '5', '8', '13', '20', '40', '100'];
     jiraUrl = '';
     revealedStoryPoints: PokerResult[] = [];
-    displayedColumns = ['username', 'storyPoints'];
+    displayedColumns = ['note', 'username', 'storyPoints'];
     descriptionHeaderRowHeight = '70px';
     headerHeight = '60px';
 
