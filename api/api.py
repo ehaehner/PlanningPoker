@@ -1,5 +1,5 @@
 import flask
-from flask import request, jsonify, Response, Flask, render_template
+from flask import request, jsonify, Response, Flask, render_template, redirect
 from flask_restful import Resource, Api, marshal_with
 from flask_socketio import SocketIO, emit, send
 from threading import Thread
@@ -141,7 +141,8 @@ def home():
 
 @app.route('/jira-proxy/<path:path>', methods=['GET'])
 def jira_proxy(path):
-    if jiraPassword and jiraUsername:
+    # allow only proxy of attachments
+    if jiraPassword and jiraUsername and re.compile(config['backend-proxy-path-regex']).match(path):
         # load
         proxyDict = {}
         if 'proxy' in config:
@@ -161,7 +162,8 @@ def jira_proxy(path):
                    if name.lower() not in excluded_headers]
 
         return Response(jiraResponse.content, jiraResponse.status_code, headers)
-    return '<p>Backend not configured, please call the admin.</p>'
+    # simple redirect -> fallback
+    return redirect(config['jiraUrl'] + path, code=302)
 
 @app.route('/api/users/all', methods=['GET'])
 def api_all_users():
