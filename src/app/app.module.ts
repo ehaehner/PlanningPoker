@@ -23,6 +23,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { WebsocketService } from './services/websocket.service';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
 import { JiraStoryComponent } from './jira-story/jira-story.component';
@@ -55,7 +56,7 @@ function initializeApp(appConfig: ConfigService): () => Promise<void> {
         BrowserAnimationsModule,
         MatButtonModule, MatGridListModule, MatInputModule, MatExpansionModule, MatButtonToggleModule, MatBadgeModule,
         MatDividerModule, MatToolbarModule, MatIconModule, MatProgressBarModule, MatTableModule, MatDialogModule, MatFormFieldModule,
-        MatAutocompleteModule, ReactiveFormsModule, MatCardModule
+        MatAutocompleteModule, ReactiveFormsModule, MatCardModule,MatCheckboxModule
     ],
     providers: [
         CookieService,

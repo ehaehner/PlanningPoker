@@ -192,6 +192,8 @@ def api_update_story():
                     new_properties.update({'points': data['storyPoints']})
                 if 'note' in data:
                     new_properties.update({'note': data['note']})
+                if 'isNotePrivate' in data:
+                    new_properties.update({'isNotePrivate': data['isNotePrivate']})
                 new_properties.update({'key': data['storyKey']})
                 user['stories'] += [new_properties]
             elif len(filteredStories) == 1:
@@ -199,6 +201,8 @@ def api_update_story():
                     filteredStories[0]['points'] = data['storyPoints']
                 if 'note' in data:
                     filteredStories[0]['note'] = data['note']
+                if 'isNotePrivate' in data:
+                    filteredStories[0]['isNotePrivate'] = data['isNotePrivate']
             else:
                 return Response("{msg:'multiple story keys found'}", status=400, mimetype='application/json')
             if 'storyPoints' in data:

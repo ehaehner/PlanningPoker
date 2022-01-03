@@ -5,6 +5,7 @@ export interface JiraStory {
     revealed: boolean;
     points?: string;
     note?: string;
+    isNotePrivate: boolean;
     async: boolean;
     activePokerUsers: string[];
 }

@@ -22,7 +22,8 @@ export class UserService {
             storyKey: story.key,
             note: story.note,
             storyPoints: story.points,
-            username: this.authService.activeUser.value.username
+            username: this.authService.activeUser.value.username,
+            isNotePrivate: story.isNotePrivate
         }, {observe: 'response'}).subscribe(() => {
         }, error => {
             switch (error.status) {

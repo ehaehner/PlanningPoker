@@ -4,6 +4,7 @@
         <mat-label>Note</mat-label>
         <textarea matInput [(ngModel)]="data.story.note" cdkFocusInitial></textarea>
     </mat-form-field>
+    <p><mat-checkbox [(ngModel)]="data.story.isNotePrivate">private Note</mat-checkbox></p>
 </div>
 <div mat-dialog-actions>
     <button mat-button (click)="onNoClick()">Cancel</button>
