@@ -25,7 +25,6 @@ export class JiraStoryComponent implements OnInit {
         activePokerUsers: []
     };
     validStoryPoints: string[] = ['?', '0', '1', '2', '3', '5', '8', '13', '20', '40', '100'];
-    descriptionHtmlRendered = false;
     jiraUrl = '';
     revealedStoryPoints: PokerResult[] = [];
     displayedColumns = ['username', 'storyPoints'];
