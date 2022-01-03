@@ -139,6 +139,29 @@ def clear_votes_for_story(storyKey):
 def home():
     return '<p>Here is nothing.</p>'
 
+@app.route('/jira-proxy/<path:path>', methods=['GET'])
+def jira_proxy(path):
+    if jiraPassword and jiraUsername:
+        # load
+        proxyDict = {}
+        if 'proxy' in config:
+            http_proxy  = config['proxy']
+            https_proxy = http_proxy
+            ftp_proxy   = http_proxy
+            logger.info('set proxy to ' + http_proxy)
+            proxyDict = {
+                "http"  : http_proxy,
+                "https" : https_proxy,
+                "ftp"   : ftp_proxy
+            }
+
+        jiraResponse = requests.get(config['jiraUrl'] + path, auth=(jiraUsername, jiraPassword), proxies=proxyDict)
+        excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection']
+        headers = [(name, value) for (name, value) in jiraResponse.raw.headers.items()
+                   if name.lower() not in excluded_headers]
+
+        return Response(jiraResponse.content, jiraResponse.status_code, headers)
+    return '<p>Backend not configured, please call the admin.</p>'
 
 @app.route('/api/users/all', methods=['GET'])
 def api_all_users():
