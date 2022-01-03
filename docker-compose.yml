@@ -32,7 +32,7 @@ services:
           - /bin/sh
           - -c
           - |
-            cp -r /pip-packages/* /pip-packages-data/ && touch /pip-packages-data/deployed.txt
+            rm -f /pip-packages-data/deployed.txt && cp -r /pip-packages/* /pip-packages-data/ && touch /pip-packages-data/deployed.txt
     backend:
         container_name: planningpoker-backend
         image: python:3-slim
