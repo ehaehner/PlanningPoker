@@ -27,18 +27,17 @@ services:
     backend-data:
         build: api/.
         volumes:
-          - python-script:/python-data
           - pip-packages:/pip-packages-data
         entrypoint:
           - /bin/sh
           - -c
           - |
-            cp -r /pip-packages/* /pip-packages-data/ && cp -r /python/* /python-data/ && touch /python-data/deployed.txt
+            cp -r /pip-packages/* /pip-packages-data/ && touch /pip-packages-data/deployed.txt
     backend:
         container_name: planningpoker-backend
         image: python:3-slim
         volumes:
-            - python-script:/usr/src/app/script
+            - ./api/api.py:/usr/src/app/api.py
             - pip-packages:/usr/local/lib/python3.10/site-packages
             - ./data/:/usr/src/app/data
             - ./src/assets/poker-config.json:/usr/src/app/src/assets/poker-config.json
@@ -46,7 +45,7 @@ services:
             - /bin/sh
             - -c
             - |
-              cd /usr/src/app/ && until [ -e /usr/src/app/script/deployed.txt ]; do echo "wait"; sleep 1; done && rm script/deployed.txt && mv script/api.py . && echo "starting" && python api.py
+              cd /usr/src/app/ && until [ -e /usr/local/lib/python3.10/site-packages/deployed.txt ]; do echo "wait"; sleep 1; done && echo "starting" && python api.py
         networks:
             - default
 volumes:
