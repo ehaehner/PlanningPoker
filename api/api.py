@@ -261,15 +261,19 @@ def show_poker_results():
         pokerListResult = []
         for user in users:
             userStoryPoints = get_story_points_for_user(user['username'], data['storyKey'])
-            if userStoryPoints:
-                pokerListResult.append({"username": user['username'], "storyPoints": userStoryPoints})
+            # check if user has story points or a public note
+            if userStoryPoints and ('points' in userStoryPoints or 'note' in userStoryPoints and ('isNotePrivate' not in userStoryPoints or userStoryPoints['isNotePrivate'] == False)):
+                userResult = {"username": user['username'], "storyPoints": userStoryPoints['points']}
+                if 'note' in userStoryPoints and ('isNotePrivate' not in userStoryPoints or userStoryPoints['isNotePrivate'] == False):
+                    userResult.update({'note': userStoryPoints['note']})
+                pokerListResult.append(userResult)
     return jsonify(pokerListResult)
 
 def get_active_poker_users(story_key):
     active_poker_users = []
     for user in users:
         userStoryPoints = get_story_points_for_user(user['username'], story_key)
-        if userStoryPoints:
+        if userStoryPoints and 'points' in userStoryPoints:
             active_poker_users.append(user['username'])
     return active_poker_users
 
@@ -279,7 +283,7 @@ def get_story_points_for_user(username, storyKey):
             if 'stories' in user:
                 for story in user['stories']:
                     if story['key'] == storyKey and 'points' in story:
-                        return story['points']
+                        return story
             return ''
     return ''
 
