@@ -157,9 +157,9 @@ def jira_proxy(path):
             }
 
         jiraResponse = requests.get(config['jiraUrl'] + path, auth=(jiraUsername, jiraPassword), proxies=proxyDict)
-        excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection']
+        excluded_headers = ['cache-control', 'content-type']
         headers = [(name, value) for (name, value) in jiraResponse.raw.headers.items()
-                   if name.lower() not in excluded_headers]
+                   if name.lower() in excluded_headers]
 
         return Response(jiraResponse.content, jiraResponse.status_code, headers)
     # simple redirect -> fallback
