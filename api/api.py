@@ -176,8 +176,6 @@ def api_update_story():
     data = request.get_json()
     if 'username' not in data:
         return Response("{msg:'username missing'}", status=400, mimetype='application/json')
-    if 'storyPoints' not in data:
-        return Response("{msg:'storyPoints missing'}", status=400, mimetype='application/json')
     if 'storyKey' not in data and 'note' not in data:
         return Response("{msg:'storyKey or note missing'}", status=400, mimetype='application/json')
     for user in users:
@@ -276,7 +274,7 @@ def get_story_points_for_user(username, storyKey):
         if 'username' in user and username == user['username']:
             if 'stories' in user:
                 for story in user['stories']:
-                    if story['key'] == storyKey:
+                    if story['key'] == storyKey and 'points' in story:
                         return story['points']
             return ''
     return ''
