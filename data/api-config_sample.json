@@ -3,5 +3,5 @@
     "jiraPassword": "mypassword",
     "jiraPokerListJql": "project=myProject AND fixVersion=pokern ORDER BY Rank",
     "proxy:": "http://proxy:8080",
-    "backend-proxy-path-regex": "^secure/attachment/.*[.]png$"
+    "backend-proxy-path-regex": "^(secure/attachment|images/icons)/.*[.](png|gif)$"
 }
