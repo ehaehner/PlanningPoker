@@ -49,16 +49,6 @@ services:
         networks:
             - default
 volumes:
-  python-script:
-    driver_opts:
-      type: tmpfs
-      device: tmpfs
   pip-packages:
-    driver_opts:
-      type: tmpfs
-      device: tmpfs
   app-node-modules:
-    driver_opts:
-      type: tmpfs
-      device: tmpfs
 
