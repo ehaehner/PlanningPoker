@@ -2,8 +2,6 @@
 
 # angular
 /.angular
-# api db file
-api/*.txt
 # poker config
 src/assets/poker-config.json
 data/
