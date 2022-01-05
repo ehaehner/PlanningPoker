@@ -1,7 +1,11 @@
-version: "2.2"
+version: "3.4"
 services:
     app-modules:
-        build: .
+        build:
+            context: .
+            args:
+                - http_proxy=$http_proxy
+                - https_proxy=$https_proxy
         volumes:
           - app-node-modules:/app-node_modules
         entrypoint:
@@ -25,7 +29,11 @@ services:
         networks:
             - default
     backend-data:
-        build: api/.
+        build:
+            context: api/.
+            args:
+                - http_proxy=$http_proxy
+                - https_proxy=$https_proxy
         volumes:
           - pip-packages:/pip-packages-data
         entrypoint:
