@@ -5,6 +5,10 @@
     </div>
     <div *ngIf="jiraPokerList.length === 0 && !jiraPokerListLoading">
         no entries
+        <div class="pyro">
+            <div class="before"></div>
+            <div class="after"></div>
+        </div>
     </div>
     <mat-accordion *ngIf="!jiraPokerListLoading && jiraPokerList.length > 0">
         <app-jira-story
