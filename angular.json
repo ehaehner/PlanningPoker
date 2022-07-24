@@ -133,5 +133,8 @@
             }
         }
     },
-    "defaultProject": "PlanningPoker"
+    "defaultProject": "PlanningPoker",
+    "cli": {
+      "analytics": false
+    }
 }

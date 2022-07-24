@@ -2,7 +2,7 @@
 #docker run -p 4200:4200 -p 5000:5000 -v /home/ipnp/share/PlanningPoker/data:/app/PlanningPoker/data -dit planningpoker
 #docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' <containerid>
 
-FROM node:17.3.0-alpine AS builder
+FROM node:18.6.0-alpine3.15 AS builder
 
 ARG http_proxy
 ARG https_proxy
