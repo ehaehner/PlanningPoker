@@ -1,4 +1,4 @@
-@import '~@angular/material/theming';
+@use '@angular/material' as mat;
 
 mat-panel-title,
 mat-panel-description {
@@ -30,7 +30,7 @@ mat-panel-description {
     mat-button-toggle-group {
         mat-button-toggle {
             &.async {
-                background-color: mat-color(mat-palette($mat-red, 600))
+                background-color: mat.m2-get-color-from-palette(mat.$m2-red-palette, 600)
             }
         }
     }

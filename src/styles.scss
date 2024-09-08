@@ -1,7 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
 
-@import '~@angular/material/prebuilt-themes/purple-green.css';
-@import '~@angular/material/theming';
 
 html, body {
     height: 100%;
@@ -21,10 +20,11 @@ body {
 }
 
 .story-description-jira a {
-    //color: mat-color($background-color, default-contrast);
-    color: mat-color(mat-palette($mat-blue-gray, 50));
+    color: mat.m2-get-color-from-palette(mat.$m2-blue-gray-palette, 50);
 
     &:visited {
-        color: mat-color(mat-palette($mat-blue-gray, 500));
+        color: mat.m2-get-color-from-palette(mat.$m2-blue-gray-palette, 500);
     }
 }
+
+

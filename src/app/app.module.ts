@@ -2,7 +2,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -38,8 +38,7 @@ function initializeApp(appConfig: ConfigService): () => Promise<void> {
     return () => appConfig.loadConfig();
 }
 
-@NgModule({
-    declarations: [
+@NgModule({ declarations: [
         AppComponent,
         LoginComponent,
         PokerlistComponent,
@@ -48,17 +47,13 @@ function initializeApp(appConfig: ConfigService): () => Promise<void> {
         CreateUserDialogComponent,
         RestartVotingDialogComponent
     ],
-    imports: [
-        BrowserModule,
-        HttpClientModule,
+    bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,
         FormsModule,
         BrowserAnimationsModule,
         MatButtonModule, MatGridListModule, MatInputModule, MatExpansionModule, MatButtonToggleModule, MatBadgeModule,
         MatDividerModule, MatToolbarModule, MatIconModule, MatProgressBarModule, MatTableModule, MatDialogModule, MatFormFieldModule,
-        MatAutocompleteModule, ReactiveFormsModule, MatCardModule,MatCheckboxModule
-    ],
-    providers: [
+        MatAutocompleteModule, ReactiveFormsModule, MatCardModule, MatCheckboxModule], providers: [
         CookieService,
         UserService,
         ConfigService,
@@ -68,9 +63,8 @@ function initializeApp(appConfig: ConfigService): () => Promise<void> {
             useFactory: initializeApp,
             deps: [ConfigService],
             multi: true
-        }
-    ],
-    bootstrap: [AppComponent]
-})
+        },
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule {
 }
