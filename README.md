@@ -36,3 +36,22 @@ curl -u <user>:<password> [<jira-url>/rest/api/2/search?jql=<JQL>&expand=rendere
 
 - Copy the response to the `search.json`
 - remove `jiraUsername` and `jiraPassword` from config file
+
+## User registration
+
+There is no complex or secure user registration process.
+Just insert a username at login page to get the users pokerlist.
+Each username has to be unique.
+
+## Features
+
+- simple login
+- estimate parallel, compare results together
+- everyone can see who has estimated efford of each ticket
+- add note for everyone or just for the user to every ticket
+- uses Jira API to get issues
+
+## Screenshots
+
+![Pokerlist overview](doc/pokerlist.png "pokerlist of a user")
+![poker result](doc/show-results.png "results are displayed")
