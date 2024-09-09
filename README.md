@@ -31,7 +31,7 @@ If Jira is not accessible it is possible to create a file at `data/search.json` 
 
 Example: 
 ```
-curl -u <user>:<password> [<jira-url>/rest/api/2/search?jql=<JQL>&expand=renderedFields&fields=key,summary,description
+curl -u <user>:<password> <jira-url>/rest/api/2/search?jql=<JQL>&expand=renderedFields&fields=key,summary,description
 ```
 
 - Copy the response to the `search.json`
