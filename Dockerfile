@@ -9,8 +9,4 @@ ARG https_proxy
 
 WORKDIR /app/PlanningPoker
 COPY ./package.json .
-RUN npm install
-
-FROM busybox:latest
-COPY --from=builder /app/PlanningPoker/node_modules /planningpoker/
-COPY --from=builder /app/PlanningPoker/node_modules/.bin /planningpoker/.bin
+RUN npm install --omit=dev

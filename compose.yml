@@ -1,61 +1,37 @@
 services:
-    app-modules:
+    app:
         build:
             context: .
             args:
                 - http_proxy=$http_proxy
                 - https_proxy=$https_proxy
-        volumes:
-          - app-node-modules:/app-node_modules
-        entrypoint:
-          - /bin/sh
-          - -c
-          - |
-            cp -r /planningpoker/. /app-node_modules/ && touch /app-node_modules/deployed.txt
-    app:
         container_name: planningpoker-app
-        image: node:20.17.0-alpine3.20
         ports:
             - "4200:4200"
         volumes:
             - .:/app/PlanningPoker
-            - app-node-modules:/app/PlanningPoker/node_modules
         entrypoint:
             - /bin/sh
             - -c
             - |
-              cd /app/PlanningPoker && until [ -e node_modules/deployed.txt ]; do echo "wait"; sleep 1; done && rm node_modules/deployed.txt && echo "starting" && npm start
+              cd /app/PlanningPoker && echo "starting" && npm start
         networks:
             - default
-    backend-data:
+    backend:
         build:
             context: api/.
             args:
                 - http_proxy=$http_proxy
                 - https_proxy=$https_proxy
-        volumes:
-          - pip-packages:/pip-packages-data
-        entrypoint:
-          - /bin/sh
-          - -c
-          - |
-            rm -f /pip-packages-data/deployed.txt && cp -r /pip-packages/* /pip-packages-data/ && touch /pip-packages-data/deployed.txt
-    backend:
         container_name: planningpoker-backend
-        image: python:3.10.14-alpine
         volumes:
             - ./api/api.py:/usr/src/app/api.py
-            - pip-packages:/usr/local/lib/python3.10/site-packages
             - ./data/:/usr/src/app/data
             - ./src/assets/poker-config.json:/usr/src/app/src/assets/poker-config.json
         entrypoint:
             - /bin/sh
             - -c
             - |
-              cd /usr/src/app/ && until [ -e /usr/local/lib/python3.10/site-packages/deployed.txt ]; do echo "wait"; sleep 1; done && echo "starting" && python api.py
+              cd /usr/src/app/ && echo "starting" && python api.py
         networks:
             - default
-volumes:
-  pip-packages:
-  app-node-modules:
-

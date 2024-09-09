@@ -4,7 +4,10 @@
 /.angular
 # poker config
 src/assets/poker-config.json
-data/
+data/api-config.json
+data/data.json
+data/*.log
+data/search.json
 
 # compiled output
 /dist
