@@ -313,8 +313,8 @@ def get_pokerlist_from_jira():
         jsonResponse = json.loads(jiraResponse.text)
     else:
         # mock jiraResponse
-        logger.info('mock jira pokerlist from api/search.json')
-        with open('api/search.json') as json_file:
+        logger.info('mock jira pokerlist from data/search.json')
+        with open('data/search.json') as json_file:
             jsonResponse = json.load(json_file)
 
     resultList = []

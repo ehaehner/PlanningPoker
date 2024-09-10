@@ -1,53 +1,57 @@
-# PlanningPoker
+# Async Planning Poker
 
-The angular project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
+This is an application for agile projects to estimate efford.
+This tool can help to reduce time spent in meetings because the estimation can be done asynchronously by every team member.
+It uses Jira API to get the stories.
 
-## Installation
+## Setup
 
-````
-sudo apt-get install python3
-pip install flask 
-pip install requests 
-pip install flask-restful 
-pip install flask-socketio install
-pip install eventlet
-````
+### Configuration Files
 
-## WSL
-Port Forwarding for WSL
-````
-netsh interface portproxy add v4tov4 listenport=5000 listenaddress=0.0.0.0 connectport=5000 connectaddress=127.0.0.1
-netsh interface portproxy add v4tov4 listenport=4200 listenaddress=0.0.0.0 connectport=4200 connectaddress=127.0.0.1
-````
+There are 2 config files:
+- [Backend Configuration at data/api-config.json](data/api-config_sample.json)
+  - `jiraUsername`: Jira username to get stories
+  - `jiraPassword`: Jira password to get stories
+  - `jiraPokerListJql`: Jira [JQL](https://support.atlassian.com/jira-service-management-cloud/docs/use-advanced-search-with-jira-query-language-jql/) to select stories for planning poker
+  - `proxy`: proxy to reach jira
+  - `backend-proxy-path-regex`: regex to display assets in planning poker frontend (directed to backend proxy because of CORS)
+- [Frontend Configuration at src/assets/poker-config.json](src/assets/poker-config_sample.json)
+  - `jiraUrl`: URL to Jira
 
-## Development server
+### start with docker
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change
-any of the source files.
+Execute in repository root:
+```
+docker compose up -f
+```
 
-## Code scaffolding
+## Mock Jira API
 
-Run `ng generate component component-name` to generate a new component. You can also
-use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+If Jira is not accessible it is possible to create a file at `data/search.json` containing a Jira response using the [search API](https://developer.atlassian.com/cloud/jira/platform/rest/v2/api-group-issue-search/#api-rest-api-2-search-get).
 
-## Build
+Example: 
+```
+curl -u <user>:<password> <jira-url>/rest/api/2/search?jql=<JQL>&expand=renderedFields&fields=key,summary,description
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag
-for a production build.
+- Copy the response to the `search.json`
+- remove `jiraUsername` and `jiraPassword` from config file
 
-## Running unit tests
+## User registration
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+There is no complex or secure user registration process.
+Just insert a username at login page to get the users pokerlist.
+Each username has to be unique.
 
-## Running end-to-end tests
+## Features
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+- simple login
+- estimate parallel, compare results together
+- everyone can see who has estimated efford of each ticket
+- add note for everyone or just for the user to every ticket
+- uses Jira API to get issues
 
-## starting python server
+## Screenshots
 
-Run `npm run start-api` to start python server.
-
-## TODOs
-
-- Threading und Caching in Python
-- Story Points direkt ins Jira übernehmen
+![Pokerlist overview](doc/pokerlist.png "pokerlist of a user")
+![poker result](doc/show-results.png "results are displayed")

@@ -1,0 +1,27 @@
+services:
+    app:
+        build:
+            context: .
+            args:
+                - http_proxy=$http_proxy
+                - https_proxy=$https_proxy
+        container_name: planningpoker-app
+        ports:
+            - "4200:4200"
+        volumes:
+            - .:/app/PlanningPoker
+        networks:
+            - default
+    backend:
+        build:
+            context: api/.
+            args:
+                - http_proxy=$http_proxy
+                - https_proxy=$https_proxy
+        container_name: planningpoker-backend
+        volumes:
+            - ./api/api.py:/usr/src/app/api.py
+            - ./data/:/usr/src/app/data
+            - ./src/assets/poker-config.json:/usr/src/app/src/assets/poker-config.json
+        networks:
+            - default
