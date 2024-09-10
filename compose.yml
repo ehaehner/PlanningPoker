@@ -10,11 +10,6 @@ services:
             - "4200:4200"
         volumes:
             - .:/app/PlanningPoker
-        entrypoint:
-            - /bin/sh
-            - -c
-            - |
-              cd /app/PlanningPoker && echo "starting" && npm start
         networks:
             - default
     backend:
@@ -28,10 +23,5 @@ services:
             - ./api/api.py:/usr/src/app/api.py
             - ./data/:/usr/src/app/data
             - ./src/assets/poker-config.json:/usr/src/app/src/assets/poker-config.json
-        entrypoint:
-            - /bin/sh
-            - -c
-            - |
-              cd /usr/src/app/ && echo "starting" && python api.py
         networks:
             - default
