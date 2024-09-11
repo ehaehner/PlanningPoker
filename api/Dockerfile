@@ -1,4 +1,4 @@
-FROM python:3.10.14-alpine AS builder
+FROM python:3.12-alpine
 
 ARG http_proxy
 ARG https_proxy
