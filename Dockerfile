@@ -4,7 +4,7 @@ ARG http_proxy
 ARG https_proxy
 
 WORKDIR /app/PlanningPoker
-COPY ./package.json .
+COPY . .
 RUN npm install --omit=dev
 
 ENTRYPOINT ["npm", "start"]

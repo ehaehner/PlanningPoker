@@ -9,7 +9,7 @@ services:
         ports:
             - "4200:4200"
         volumes:
-            - .:/app/PlanningPoker
+            - ./data:/app/PlanningPoker/data
     backend:
         build:
             context: api/.
@@ -21,3 +21,4 @@ services:
             - ./api/api.py:/usr/src/app/api.py
             - ./data/:/usr/src/app/data
             - ./src/assets/poker-config.json:/usr/src/app/src/assets/poker-config.json
+
