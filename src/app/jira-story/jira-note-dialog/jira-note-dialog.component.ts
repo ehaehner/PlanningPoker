@@ -5,7 +5,8 @@ import { JiraStory } from '../../primitive/jira-story';
 @Component({
     selector: 'app-jira-note-dialog',
     templateUrl: './jira-note-dialog.component.html',
-    styleUrls: ['./jira-note-dialog.component.scss']
+    styleUrls: ['./jira-note-dialog.component.scss'],
+    standalone: false
 })
 export class JiraNoteDialogComponent {
 

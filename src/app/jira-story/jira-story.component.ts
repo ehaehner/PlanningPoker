@@ -13,7 +13,8 @@ import { RestartVotingDialogComponent } from './restart-voting-dialog/restart-vo
 @Component({
     selector: 'app-jira-story',
     templateUrl: './jira-story.component.html',
-    styleUrls: ['./jira-story.component.scss']
+    styleUrls: ['./jira-story.component.scss'],
+    standalone: false
 })
 export class JiraStoryComponent implements OnInit {
     @Input() story: JiraStory = {

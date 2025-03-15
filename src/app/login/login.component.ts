@@ -11,7 +11,8 @@ import { CreateUserDialogComponent } from './create-user-dialog/create-user-dial
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss']
+    styleUrls: ['./login.component.scss'],
+    standalone: false
 })
 export class LoginComponent implements OnInit {
     username = '';

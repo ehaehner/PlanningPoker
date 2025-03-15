@@ -1,6 +1,6 @@
 // file service: https://www.twilio.com/blog/transfer-files-data-javascript-applications-angular-node-js
 import { BrowserModule } from '@angular/platform-browser';
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { NgModule, inject, provideAppInitializer } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
@@ -58,12 +58,10 @@ function initializeApp(appConfig: ConfigService): () => Promise<void> {
         UserService,
         ConfigService,
         WebsocketService,
-        {
-            provide: APP_INITIALIZER,
-            useFactory: initializeApp,
-            deps: [ConfigService],
-            multi: true
-        },
+        provideAppInitializer(() => {
+        const initializerFn = (initializeApp)(inject(ConfigService));
+        return initializerFn();
+      }),
         provideHttpClient(withInterceptorsFromDi())
     ] })
 export class AppModule {
